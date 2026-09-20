@@ -522,7 +522,7 @@ h4 {
     align-items: center;
     gap: 8px;
     min-height: 42px;
-    padding: 0 15px;
+    padding: 9px  !important;
   }
   .lang button {
   
