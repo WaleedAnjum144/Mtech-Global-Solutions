@@ -522,13 +522,14 @@ h4 {
     align-items: center;
     gap: 8px;
     min-height: 42px;
-    padding: 9px  !important;
+    padding: 9px !important;
   }
+
   .lang button {
-  
-  font-size: .55rem !important;
-  
-}
+
+    font-size: .55rem !important;
+
+  }
 }
 
 
@@ -8222,9 +8223,17 @@ html[data-lang="both"] .bi>.zh {
     gap: 6px;
   }
 
-  .gallery-overlay {
+  /* .gallery-overlay {
     display: none;
+  } */
+
+  .gallery-overlay {
+    opacity: 1;
+
+
   }
+
+
 
 }
 
@@ -15779,8 +15788,8 @@ html[data-lang="both"] .bi>.zh {
   }
 
   .gallery {
-    grid-template-columns: 1fr;
-    grid-auto-rows: 230px;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows:180px;
   }
 
   .pair {
