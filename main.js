@@ -1,24 +1,97 @@
+
 (function () {
   var root = document.documentElement;
   var KEY = 'mtech-lang';
-  function setLang(v) {
-    root.setAttribute('data-lang', v);
-    document.querySelectorAll('[data-set-lang]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.setLang === v)); });
-    root.lang = (v === 'zh') ? 'zh-CN' : 'en';
-    try { localStorage.setItem(KEY, v); } catch (e) { }
-  }
-  var saved = null; try { saved = localStorage.getItem(KEY); } catch (e) { }
-  if (saved === 'en' || saved === 'zh' || saved === 'both') setLang(saved);
-  document.querySelectorAll('[data-set-lang]').forEach(function (b) { b.addEventListener('click', function () { setLang(b.dataset.setLang); }); });
 
-  var toc = document.getElementById('toc'), btn = document.getElementById('menuBtn'), closeBtn = document.getElementById('tocClose');
-  function openToc() { toc.classList.add('open'); toc.setAttribute('aria-hidden', 'false'); btn.setAttribute('aria-expanded', 'true'); document.body.style.overflow = 'hidden'; setTimeout(function () { closeBtn.focus(); }, 50); }
-  function closeToc() { toc.classList.remove('open'); toc.setAttribute('aria-hidden', 'true'); btn.setAttribute('aria-expanded', 'false'); document.body.style.overflow = ''; btn.focus({ preventScroll: true }); }
+  function setLang(v) {
+    // Only allow English or Chinese
+    if (v !== 'en' && v !== 'zh') {
+      v = 'en';
+    }
+
+    root.setAttribute('data-lang', v);
+
+    // Update language buttons
+    document.querySelectorAll('[data-set-lang]').forEach(function (b) {
+      b.setAttribute(
+        'aria-pressed',
+        String(b.dataset.setLang === v)
+      );
+    });
+
+    // Set document language
+    root.lang = (v === 'zh') ? 'zh-CN' : 'en';
+
+    // Save selected language
+    try {
+      localStorage.setItem(KEY, v);
+    } catch (e) {}
+  }
+
+  // Get saved language
+  var saved = null;
+
+  try {
+    saved = localStorage.getItem(KEY);
+  } catch (e) {}
+
+  // Default to English
+  if (saved === 'zh') {
+    setLang('zh');
+  } else {
+    setLang('en');
+  }
+
+  // Language buttons
+  document.querySelectorAll('[data-set-lang]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      setLang(b.dataset.setLang);
+    });
+  });
+
+  // Mobile menu
+  var toc = document.getElementById('toc');
+  var btn = document.getElementById('menuBtn');
+  var closeBtn = document.getElementById('tocClose');
+
+  function openToc() {
+    toc.classList.add('open');
+    toc.setAttribute('aria-hidden', 'false');
+    btn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+
+    setTimeout(function () {
+      closeBtn.focus();
+    }, 50);
+  }
+
+  function closeToc() {
+    toc.classList.remove('open');
+    toc.setAttribute('aria-hidden', 'true');
+    btn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+
+    btn.focus({ preventScroll: true });
+  }
+
   btn.addEventListener('click', openToc);
-  toc.querySelectorAll('[data-close]').forEach(function (el) { el.addEventListener('click', function () { toc.classList.remove('open'); toc.setAttribute('aria-hidden', 'true'); btn.setAttribute('aria-expanded', 'false'); document.body.style.overflow = ''; }); });
+
+  toc.querySelectorAll('[data-close]').forEach(function (el) {
+    el.addEventListener('click', function () {
+      closeToc();
+    });
+  });
+
   closeBtn.addEventListener('click', closeToc);
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && toc.classList.contains('open')) closeToc(); });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && toc.classList.contains('open')) {
+      closeToc();
+    }
+  });
 })();
+
+
 
 
 
